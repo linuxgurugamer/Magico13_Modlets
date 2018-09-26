@@ -24,7 +24,7 @@
 1:SensibleScreenshot, SensibleScreenshot.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:SensibleScreenshot,SensibleScreenshot/SensibleScreenshot.csproj,SensibleScreenshot.version,GameData/SensibleScreenshot/Plugins,SensibleScreenshot
+2:SensibleScreenshot,Sensible_Screenshot/SensibleScreenshot.csproj,SensibleScreenshot.version,GameData/SensibleScreenshot/Plugins,SensibleScreenshot
 
 
 
