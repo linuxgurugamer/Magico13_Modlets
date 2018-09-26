@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using ClickThroughFix;
 
 namespace EditorTime
 {
@@ -99,7 +100,7 @@ namespace EditorTime
         public void DrawTimeWindow()
         {
             //Actually draw the window
-            timeWindow = GUILayout.Window(1936342, timeWindow, TimeWindow, "Current Time", HighLogic.Skin.window);
+            timeWindow =ClickThruBlocker.GUILayoutWindow(1936342, timeWindow, TimeWindow, "Current Time", HighLogic.Skin.window);
         }
 
         public void TimeWindow(int windowID)

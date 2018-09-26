@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatedQuickSaves", "Dated_QuickSaves\DatedQuickSaves.csproj", "{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}"
 EndProject
@@ -15,7 +15,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorTime", "EditorTime\Ed
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wwwwwwwww", "Wwwwwwwww\Wwwwwwwww.csproj", "{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotInMyBackYard", "NotInMyBackYard\NotInMyBackYard.csproj", "{9A0E332D-7D94-4A6F-9290-117FFFA08284}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NIMBY", "NotInMyBackYard\NIMBY.csproj", "{9A0E332D-7D94-4A6F-9290-117FFFA08284}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02151688-7756-4DFC-A69E-DFFABDC38D0A}"
+	ProjectSection(SolutionItems) = preProject
+		buildRelease.bat = buildRelease.bat
+		DatedQuickSaves.version = DatedQuickSaves.version
+		deploy.bat = deploy.bat
+		EditorTime.version = EditorTime.version
+		install.bat = install.bat
+		install.sh = install.sh
+		jenkins.txt = jenkins.txt
+		NIMBY.version = NIMBY.version
+		SensibleScreenshot.version = SensibleScreenshot.version
+		ShipSaveSplicer.version = ShipSaveSplicer.version
+		TreeToppler.version = TreeToppler.version
+		Wwwwwwwww.version = Wwwwwwwww.version
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +70,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35AC310B-F02D-461F-AC75-4B63F2A35537}
 	EndGlobalSection
 EndGlobal

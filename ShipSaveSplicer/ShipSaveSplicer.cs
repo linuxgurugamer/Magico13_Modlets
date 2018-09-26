@@ -6,12 +6,24 @@ using System.Reflection;
 using KSP.UI.Screens;
 using System.Text;
 
+using ToolbarControl_NS;
+
 namespace ShipSaveSplicer
 {
+
+    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    public class RegisterToolbar : MonoBehaviour
+    {
+        void Start()
+        {
+            ToolbarControl.RegisterMod(ShipSaveSplicer.MODID, ShipSaveSplicer.MODNAME);
+        }
+    }
+
     [KSPAddon(KSPAddon.Startup.TrackingStation, false)]
     public class ShipSaveSplicer : MonoBehaviour
     {
-        private static ApplicationLauncherButton _theButton;
+        //private static ApplicationLauncherButton _theButton;
         private static bool _includeCrew = false;
         private static bool _eventAdded = false;
         public void Start()
@@ -26,21 +38,41 @@ namespace ShipSaveSplicer
 
         public void OnDestroy()
         {
+#if false
             if (_theButton != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(_theButton);
                 _theButton = null;
             }
+#endif
+            toolbarControl.OnDestroy();
+            Destroy(toolbarControl);
         }
+
+       
+        ToolbarControl toolbarControl;
+        internal const string MODID = "shipsavesplicer_NS";
+        internal const string MODNAME = "Ship Save Splicer";
 
         public void AddButton()
         {
+#if false
             if (ApplicationLauncher.Ready && _theButton == null && HighLogic.LoadedScene == GameScenes.TRACKSTATION)
             {
                 _theButton = ApplicationLauncher.Instance.AddModApplication(
                     OnClick,
                     Dummy, Dummy, Dummy, Dummy, Dummy, ApplicationLauncher.AppScenes.TRACKSTATION, GameDatabase.Instance.GetTexture("ShipSaveSplicer/icon", false));
             }
+#endif
+            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+            toolbarControl.AddToAllToolbars(OnClick, Dummy,
+                ApplicationLauncher.AppScenes.TRACKSTATION,
+                MODID,
+                "shipsaveButton",
+                "ShipSaveSplicer/PluginData/icon-38",
+                "ShipSaveSplicer/PluginData/icon-24",
+                MODNAME
+            );
         }
 
         private void Dummy() { }
@@ -55,7 +87,8 @@ namespace ShipSaveSplicer
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 OpenConvertWindow(); //convert ships to craft files
-                _theButton.SetFalse();
+                                     //                _theButton.SetFalse();
+                toolbarControl.SetFalse(false);
                 return;
             }
 
@@ -72,7 +105,8 @@ namespace ShipSaveSplicer
                 ExportSelectedCraft(selectedVessel);
             }
 
-            _theButton.SetFalse(false);
+            //            _theButton.SetFalse(false);
+            toolbarControl.SetFalse();
         }
 
         public void ExportSelectedCraft(Vessel vessel)
