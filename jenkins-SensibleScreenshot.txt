@@ -21,7 +21,7 @@
 # 0:1.3
 
 # 1:GAMEDIR, VERSIONFILE [, GITHUBREPO ]
-1:SensibleScreenshot, SensibleScreenshot.version
+1:SensibleScreenshot, SensibleScreenshot.version, Magico13_Modlets
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
 2:SensibleScreenshot,Sensible_Screenshot/SensibleScreenshot.csproj,SensibleScreenshot.version,GameData/SensibleScreenshot/Plugins
