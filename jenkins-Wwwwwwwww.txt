@@ -24,7 +24,7 @@
 1:Wwwwwwwww, Wwwwwwwww.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:Wwwwwwwww,Wwwwwwwww/Wwwwwwwww.csproj,Wwwwwwwww/Wwwwwwwww.version,GameData/Wwwwwwwww/Plugins,Wwwwwwwww
+2:Wwwwwwwww,Wwwwwwwww/Wwwwwwwww.csproj,Wwwwwwwww.version,GameData/Wwwwwwwww/Plugins,Wwwwwwwww
 
 
 # 3:SOURCEFILE, DESTDIR

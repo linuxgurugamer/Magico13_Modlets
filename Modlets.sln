@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatedQuickSaves", "Dated_QuickSaves\DatedQuickSaves.csproj", "{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatedQuickSaves", "DatedQuickSaves\DatedQuickSaves.csproj", "{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensibleScreenshot", "Sensible_Screenshot\SensibleScreenshot.csproj", "{9D1ADE92-8916-4060-93F2-21DB91E8CA00}"
 EndProject

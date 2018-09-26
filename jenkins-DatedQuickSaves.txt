@@ -24,7 +24,7 @@
 1:DatedQuickSaves, DatedQuickSaves.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:DatedQuickSaves,DatedQuickSaves/DatedQuickSaves.csproj,DatedQuickSaves/DatedQuickSaves.version,GameData/DatedQuickSaves/Plugins,DatedQuickSaves
+2:DatedQuickSaves,DatedQuickSaves/DatedQuickSaves.csproj,DatedQuickSaves.version,GameData/DatedQuickSaves/Plugins,DatedQuickSaves
 
 
 

@@ -24,7 +24,7 @@
 1:TreeToppler, TreeToppler.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:TreeToppler,TreeToppler/TreeToppler.csproj,TreeToppler/TreeToppler.version,GameData/TreeToppler/Plugins,TreeToppler
+2:TreeToppler,TreeToppler/TreeToppler.csproj,TreeToppler.version,GameData/TreeToppler/Plugins,TreeToppler
 
 
 # 3:SOURCEFILE, DESTDIR

@@ -24,7 +24,7 @@
 1:EditorTime, EditorTime.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:EditorTime,EditorTime/EditorTime.csproj,EditorTime/EditorTime.version,GameData/EditorTime/Plugins,EditorTime
+2:EditorTime,EditorTime/EditorTime.csproj,EditorTime.version,GameData/EditorTime/Plugins,EditorTime
 
 
 # 3:SOURCEFILE, DESTDIR
