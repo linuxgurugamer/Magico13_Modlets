@@ -24,7 +24,7 @@
 1:NIMBY, NIMBY.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:NIMBY,NotInMyBackYard/NIMBY.csproj,NIMBY.version,GameData/NIMBY/Plugins,NIMBY
+2:NIMBY,NotInMyBackYard/NIMBY.csproj,NIMBY.version,GameData/NIMBY/Plugins
 
 
 

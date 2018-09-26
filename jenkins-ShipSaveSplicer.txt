@@ -24,7 +24,7 @@
 1:ShipSaveSplicer, ShipSaveSplicer.version
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:ShipSaveSplicer,ShipSaveSplicer/ShipSaveSplicer.csproj,ShipSaveSplicer.version,GameData/ShipSaveSplicer/Plugins,ShipSaveSplicer
+2:ShipSaveSplicer,ShipSaveSplicer/ShipSaveSplicer.csproj,ShipSaveSplicer.version,GameData/ShipSaveSplicer/Plugins
 
 
 
