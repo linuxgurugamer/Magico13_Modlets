@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02151688-7756-4DFC-A69E-DFFABDC38D0A}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		ChangeLog.txt = ChangeLog.txt
 		DatedQuickSaves.version = DatedQuickSaves.version
 		deploy.bat = deploy.bat
 		EditorTime.version = EditorTime.version
