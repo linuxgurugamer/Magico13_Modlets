@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using KSP;
 using UnityEngine;
-using MagiCore;
 
 namespace DatedQuickSaves
 {
@@ -48,10 +45,6 @@ namespace DatedQuickSaves
 
         void DoWork()
         {
-            //Copy the quicksave file and append the in-game UT
-            // (of the file, or the current one?)
-            //let's use current UT for now
-
             DoCheck = false;
             timer = 0;
 
@@ -61,13 +54,11 @@ namespace DatedQuickSaves
             if (!System.IO.File.Exists(quicksave))
                 return;
 
-           // string time = FormattedTime(Planetarium.GetUniversalTime());
-
-           // string newName = "/quicksave_"+time+".sfs";
             string newName = MagiCore.StringTranslation.AddFormatInfo(config.fileTemplate, "DatedQuickSaves", config.dateFormat);
 
             System.IO.File.Copy(quicksave, saveFolder+"/"+newName+".sfs");
             Debug.Log("Copied quicksave to " + newName);
+            ScreenMessages.PostScreenMessage("Quicksaved to '" + newName + ".sfs'");
 
             SavedQSFiles.Add(newName);
             PurgeExtraneousFiles();
@@ -146,11 +137,9 @@ namespace DatedQuickSaves
                 while (SavedQSFiles.Count > tgtQS)
                 {
                     //purge oldest (top one)
-                    string oldest = SavedQSFiles[0]+".sfs";
-                    if (System.IO.File.Exists(saveFolder+oldest))
-                    {
-                        System.IO.File.Delete(saveFolder + oldest);
-                    }
+                    string oldest = SavedQSFiles[0];
+                    System.IO.File.Delete(saveFolder + oldest + ".sfs");
+                    System.IO.File.Delete(saveFolder + oldest + ".loadmeta");
                     SavedQSFiles.RemoveAt(0);
                     purgedQS++;
                 }
@@ -160,11 +149,9 @@ namespace DatedQuickSaves
                 while (SavedASFiles.Count > tgtAS)
                 {
                     //purge oldest (top one)
-                    string oldest = SavedASFiles[0] + ".sfs";
-                    if (System.IO.File.Exists(saveFolder + oldest))
-                    {
-                        System.IO.File.Delete(saveFolder + oldest);
-                    }
+                    string oldest = SavedASFiles[0];
+                    System.IO.File.Delete(saveFolder + oldest + ".sfs");
+                    System.IO.File.Delete(saveFolder + oldest + ".loadmeta");
                     SavedASFiles.RemoveAt(0);
                     purgedAS++;
                 }
@@ -187,9 +174,12 @@ namespace DatedQuickSaves
         public int maxQSFiles = 20, maxASFiles = 20;
         public int autoSaveFreq = 15;
 
-        private string filename = KSPUtil.ApplicationRootPath + "/GameData/DatedQuickSaves/settings.cfg";
+        private string directory = KSPUtil.ApplicationRootPath + "/GameData/DatedQuickSaves/PluginData/";
+        private string filename = "settings.cfg";
         public void Save()
         {
+            if (!System.IO.Directory.Exists(directory))
+                System.IO.Directory.CreateDirectory(directory);
             ConfigNode cfg = new ConfigNode();
             cfg.AddValue("DateString", dateFormat);
             cfg.AddValue("FileNameTemplate", fileTemplate);
@@ -202,14 +192,14 @@ namespace DatedQuickSaves
             cfg.AddValue("FillSpaces", fillSpaces);
             cfg.AddValue("ReplaceChar", spaceFiller);
 
-            cfg.Save(filename);
+            cfg.Save(directory + filename);
         }
 
         public void Load()
         {
-            if (System.IO.File.Exists(filename))
+            if (System.IO.File.Exists(directory + filename))
             {
-                ConfigNode cfg = ConfigNode.Load(filename);
+                ConfigNode cfg = ConfigNode.Load(directory + filename);
                 dateFormat = cfg.GetValue("DateString");
                 fileTemplate = cfg.GetValue("FileNameTemplate");
                 int.TryParse(cfg.GetValue("MaxQuickSaveCount"), out maxQSFiles);
@@ -226,7 +216,7 @@ namespace DatedQuickSaves
     }
 }
 /*
-Copyright (C) 2016  Michael Marvin
+Copyright (C) 2017  Michael Marvin
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

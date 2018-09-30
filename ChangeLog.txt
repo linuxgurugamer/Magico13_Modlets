@@ -1,0 +1,6 @@
+
+1.4.0.1
+	Adoption by Linuxgurugamer
+	Added AssemblyVersion.tt to all modlets
+	Added support for toolbarcontroller to the ShipSaveSplicer
+	Added support for clickthroughblocker to EditorTime

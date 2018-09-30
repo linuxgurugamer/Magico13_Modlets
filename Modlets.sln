@@ -1,17 +1,46 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatedQuickSaves", "Dated_QuickSaves\DatedQuickSaves.csproj", "{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldExperience", "FieldExperience\FieldExperience.csproj", "{57EE3324-428C-4319-AB8A-3D855923FD5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatedQuickSaves", "DatedQuickSaves\DatedQuickSaves.csproj", "{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensibleScreenshot", "Sensible_Screenshot\SensibleScreenshot.csproj", "{9D1ADE92-8916-4060-93F2-21DB91E8CA00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeToppler", "TreeToppler\TreeToppler.csproj", "{836A9667-2C1D-4810-932F-0BEEA26ECDB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipSaveSplicer", "ShipSaveSplicer\ShipSaveSplicer.csproj", "{00724594-164A-4D6F-AD64-254F81231A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorTime", "EditorTime\EditorTime.csproj", "{1E93E0F6-CC8E-46F5-A038-A75BBA9B4FA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wwwwwwwww", "Wwwwwwwww\Wwwwwwwww.csproj", "{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NIMBY", "NotInMyBackYard\NIMBY.csproj", "{9A0E332D-7D94-4A6F-9290-117FFFA08284}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02151688-7756-4DFC-A69E-DFFABDC38D0A}"
+	ProjectSection(SolutionItems) = preProject
+		buildRelease.bat = buildRelease.bat
+		ChangeLog.txt = ChangeLog.txt
+		DatedQuickSaves.version = DatedQuickSaves.version
+		deploy.bat = deploy.bat
+		EditorTime.version = EditorTime.version
+		install.bat = install.bat
+		install.sh = install.sh
+		jenkins-DatedQuickSaves.txt = jenkins-DatedQuickSaves.txt
+		jenkins-EditorTime.txt = jenkins-EditorTime.txt
+		jenkins-NIMBY.txt = jenkins-NIMBY.txt
+		jenkins-SensibleScreenshot.txt = jenkins-SensibleScreenshot.txt
+		jenkins-ShipSaveSplicer.txt = jenkins-ShipSaveSplicer.txt
+		jenkins-TreeToppler.txt = jenkins-TreeToppler.txt
+		jenkins-Wwwwwwwww.txt = jenkins-Wwwwwwwww.txt
+		jenkins.txt = jenkins.txt
+		modlets.version = modlets.version
+		NIMBY.version = NIMBY.version
+		SensibleScreenshot.version = SensibleScreenshot.version
+		ShipSaveSplicer.version = ShipSaveSplicer.version
+		TreeToppler.version = TreeToppler.version
+		Wwwwwwwww.version = Wwwwwwwww.version
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +52,6 @@ Global
 		{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8211030-BF7F-42BF-A7C2-8C4D31A8E696}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57EE3324-428C-4319-AB8A-3D855923FD5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57EE3324-428C-4319-AB8A-3D855923FD5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57EE3324-428C-4319-AB8A-3D855923FD5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57EE3324-428C-4319-AB8A-3D855923FD5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D1ADE92-8916-4060-93F2-21DB91E8CA00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D1ADE92-8916-4060-93F2-21DB91E8CA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D1ADE92-8916-4060-93F2-21DB91E8CA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,8 +64,23 @@ Global
 		{00724594-164A-4D6F-AD64-254F81231A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00724594-164A-4D6F-AD64-254F81231A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00724594-164A-4D6F-AD64-254F81231A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E93E0F6-CC8E-46F5-A038-A75BBA9B4FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E93E0F6-CC8E-46F5-A038-A75BBA9B4FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E93E0F6-CC8E-46F5-A038-A75BBA9B4FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E93E0F6-CC8E-46F5-A038-A75BBA9B4FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB9A24D-2BB5-4E8E-BD6B-60075E60F6B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0E332D-7D94-4A6F-9290-117FFFA08284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0E332D-7D94-4A6F-9290-117FFFA08284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0E332D-7D94-4A6F-9290-117FFFA08284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0E332D-7D94-4A6F-9290-117FFFA08284}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35AC310B-F02D-461F-AC75-4B63F2A35537}
 	EndGlobalSection
 EndGlobal
