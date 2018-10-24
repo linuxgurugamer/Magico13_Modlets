@@ -4,3 +4,6 @@
 	Added AssemblyVersion.tt to all modlets
 	Added support for toolbarcontroller to the ShipSaveSplicer
 	Added support for clickthroughblocker to EditorTime
+
+1.4.0.2
+	Version bump on all modlets for 1.5 rebuild
