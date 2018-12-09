@@ -7,3 +7,7 @@
 
 1.4.0.2
 	Version bump on all modlets for 1.5 rebuild
+
+1.4.0.4
+	Fixed missing directory in the NIMBY folder
+	Removed max version from all .version files
