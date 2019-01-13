@@ -17,31 +17,36 @@ namespace NotInMyBackYard
         public void Start()
         {
             //initialize beacons
-            LoadBeacons(KSPUtil.ApplicationRootPath+"/GameData/NIMBY/PluginData/Beacons.cfg", true);
-        }
+            ConfigNode NIMBYsettings = null;
 
-        public void LoadBeacons(string beaconFile, bool createIfNotExists = false)
-        {
-            StaticBeacons.Clear();
-            if (System.IO.File.Exists(beaconFile))
+            foreach (ConfigNode node in GameDatabase.Instance.GetConfigNodes("NIMBY"))
             {
-                ConfigNode beaconsNode = ConfigNode.Load(beaconFile);
-                foreach (ConfigNode beacon in beaconsNode.GetNodes("Beacon"))
+                NIMBYsettings = node;
+            }
+
+            if (NIMBYsettings.HasValue("MobileBeaconRange"))
+            {
+                double mbr;
+                if (double.TryParse(NIMBYsettings.GetValue("MobileBeaconRange"), out mbr))
+                    MobileBeaconRange = mbr;
+            }
+
+            if (NIMBYsettings.HasNode("Beacons"))
+            {
+                ConfigNode node = NIMBYsettings.GetNode("Beacons");
+                ConfigNode[] beacons = node.GetNodes("Beacon");
+
+                foreach (ConfigNode beacon in beacons)
                 {
                     StaticBeacons.Add(new StaticBeacon(beacon));
                 }
             }
-            else if (createIfNotExists)
+            else
             {
-                //Set the defaults and save the file
-                StaticBeacon KSC = new StaticBeacon("KSC", SpaceCenter.Instance.Latitude, SpaceCenter.Instance.Longitude, 100000);
-                StaticBeacons.Add(KSC);
-
-                ConfigNode beaconsNode = new ConfigNode("Beacons");
-                beaconsNode.AddNode(KSC.AsNode());
-
-                beaconsNode.Save(beaconFile);
+                Debug.Log("[NIMBY] No Beacons node found!");
             }
+
+            Debug.Log("[NIMBY] Loaded " + StaticBeacons.Count + " static beacons.");
         }
 
         protected void NewRecoveryFunction(Vessel vessel)
