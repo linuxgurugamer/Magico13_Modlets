@@ -11,3 +11,8 @@
 1.4.0.4
 	Fixed missing directory in the NIMBY folder
 	Removed max version from all .version files
+
+1.4.1
+	Thanks to Kerbas-ad-astra:
+		This allows launchsites to be added by Module Manager patches (useful for Making History, Real Solar System, Kerbal Konstructs...)
+
