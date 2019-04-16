@@ -42,23 +42,35 @@ namespace DatedQuickSaves
                 DoAutoSave();
             }
         }
+        string SaveFolder { get { return KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/"; } }
 
         void DoWork()
         {
             DoCheck = false;
             timer = 0;
 
-            string saveFolder = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder,
-                quicksave = saveFolder+"/quicksave.sfs";
+            //string saveFolder = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder,
+            string saveFolder = SaveFolder;
+            string quicksave = saveFolder + "quicksave";
 
-            if (!System.IO.File.Exists(quicksave))
+            if (!System.IO.File.Exists(quicksave + ".sfs"))
                 return;
 
             string newName = MagiCore.StringTranslation.AddFormatInfo(config.fileTemplate, "DatedQuickSaves", config.dateFormat);
-
-            System.IO.File.Copy(quicksave, saveFolder+"/"+newName+".sfs");
-            Debug.Log("Copied quicksave to " + newName);
-            ScreenMessages.PostScreenMessage("Quicksaved to '" + newName + ".sfs'");
+            string fname = saveFolder + newName;
+            if (System.IO.File.Exists(fname))
+            {
+                int cnt = 0;
+                while (System.IO.File.Exists(saveFolder + newName + "-" + cnt.ToString() + ".sfs") ||
+                    System.IO.File.Exists(saveFolder + newName + "-" + cnt.ToString() + ".loadmeta"))
+                    cnt++;
+                newName = newName + "-" + cnt.ToString();
+                fname = saveFolder + newName;
+            }
+            System.IO.File.Copy(quicksave + ".sfs", fname + ".sfs");
+            System.IO.File.Copy(quicksave + ".loadmeta", fname + ".loadmeta");
+            Debug.Log("Copied quicksave to " + fname);
+            ScreenMessages.PostScreenMessage("Quicksaved to '" + newName);
 
             SavedQSFiles.Add(newName);
             PurgeExtraneousFiles();
@@ -84,8 +96,8 @@ namespace DatedQuickSaves
         {
             SavedQSFiles.Clear();
             SavedASFiles.Clear();
-            string saveFolder = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder+"/";
-            if (System.IO.File.Exists(saveFolder+"DQS_DataBase.cfg"))
+            string saveFolder = SaveFolder;
+            if (System.IO.File.Exists(saveFolder + "DQS_DataBase.cfg"))
             {
                 ConfigNode database = ConfigNode.Load(saveFolder + "DQS_DataBase.cfg");
                 ConfigNode QSDB, ASDB;
@@ -105,7 +117,7 @@ namespace DatedQuickSaves
 
         void SaveKnownFiles()
         {
-            string saveFolder = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/";
+            string saveFolder = SaveFolder;
 
             ConfigNode database = new ConfigNode();
             ConfigNode QSDB = new ConfigNode("QuickSaves"), ASDB = new ConfigNode("AutoSaves");
@@ -125,12 +137,17 @@ namespace DatedQuickSaves
             database.Save(saveFolder + "DQS_DataBase.cfg");
         }
 
+        void DeleteIfExists(string fname)
+        {
+            if (System.IO.File.Exists(fname))
+                System.IO.File.Delete(fname);
+        }
         void PurgeExtraneousFiles()
         {
             int tgtQS = config.maxQSFiles;
             int tgtAS = config.maxASFiles;
 
-            string saveFolder = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/";
+            string saveFolder = SaveFolder;
             int purgedQS = 0, purgedAS = 0;
             if (tgtQS >= 0) //if negative, then keep all files
             {
@@ -138,8 +155,8 @@ namespace DatedQuickSaves
                 {
                     //purge oldest (top one)
                     string oldest = SavedQSFiles[0];
-                    System.IO.File.Delete(saveFolder + oldest + ".sfs");
-                    System.IO.File.Delete(saveFolder + oldest + ".loadmeta");
+                    DeleteIfExists(saveFolder + oldest + ".sfs");
+                    DeleteIfExists(saveFolder + oldest + ".loadmeta");
                     SavedQSFiles.RemoveAt(0);
                     purgedQS++;
                 }
@@ -150,8 +167,8 @@ namespace DatedQuickSaves
                 {
                     //purge oldest (top one)
                     string oldest = SavedASFiles[0];
-                    System.IO.File.Delete(saveFolder + oldest + ".sfs");
-                    System.IO.File.Delete(saveFolder + oldest + ".loadmeta");
+                    DeleteIfExists(saveFolder + oldest + ".sfs");
+                    DeleteIfExists(saveFolder + oldest + ".loadmeta");
                     SavedASFiles.RemoveAt(0);
                     purgedAS++;
                 }
@@ -167,7 +184,7 @@ namespace DatedQuickSaves
         public string dateFormat = "yyyy-MM-dd--HH-mm-ss";
         public string fileTemplate = "quicksave_Y[year]D[day]H[hour]M[min]S[sec]";
         public string autoSaveTemplate = "autosave_Y[year]D[day]H[hour]M[min]S[sec]";
-        
+
         public bool fillSpaces = false;
         public string spaceFiller = "_";
 
@@ -203,14 +220,14 @@ namespace DatedQuickSaves
                 dateFormat = cfg.GetValue("DateString");
                 fileTemplate = cfg.GetValue("FileNameTemplate");
                 int.TryParse(cfg.GetValue("MaxQuickSaveCount"), out maxQSFiles);
-                
+
                 autoSaveTemplate = cfg.GetValue("AutoSaveTemplate");
                 int.TryParse(cfg.GetValue("AutoSaveFreq"), out autoSaveFreq);
                 int.TryParse(cfg.GetValue("MaxAutoSaveCount"), out maxASFiles);
 
                 bool.TryParse(cfg.GetValue("FillSpaces"), out fillSpaces);
                 spaceFiller = cfg.GetValue("ReplaceChar");
-                
+
             }
         }
     }

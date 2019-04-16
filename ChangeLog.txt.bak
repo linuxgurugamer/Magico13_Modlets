@@ -16,7 +16,3 @@
 	Thanks to Kerbas-ad-astra:
 		This allows launchsites to be added by Module Manager patches (useful for Making History, Real Solar System, Kerbal Konstructs...)
 
-1.4.1.1 (QuickSave 1.2.3.4)
-    Updated DatedQuicksave to have one place to define the saveFolder
-    Added to DatedQuicksave checks for file existance before deletion to avoid 
-    nullref if file is missing
