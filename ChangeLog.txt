@@ -20,3 +20,7 @@
     Updated DatedQuicksave to have one place to define the saveFolder
     Added to DatedQuicksave checks for file existance before deletion to avoid 
     nullref if file is missing
+
+1.4.1.2
+	Version bump for 1.7.2
+	Updated all AssemblyVersion.tt for location independent builds
