@@ -1,6 +1,6 @@
 {
-  "NAME": "DatedQuickSaves",
-  "URL": "http://ksp.spacetux.net/avc/DatedQuickSaves",
+  "NAME": "SensibleScreenshot",
+  "URL": "http://ksp.spacetux.net/avc/SensibleScreenshot",
   "DOWNLOAD": "https://github.com/linuxgurugamer/Magico13_Modlets/releases",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
@@ -10,11 +10,11 @@
     "MAJOR": 1,
     "MINOR": 2,
     "PATCH": 4,
-    "BUILD": 0
+    "BUILD": 4
   },
   "KSP_VERSION_MIN": {
     "MAJOR": 1,
-    "MINOR": 8,
-    "PATCH": 0
+    "MINOR": 5,
+    "PATCH": 1
   }
 }
