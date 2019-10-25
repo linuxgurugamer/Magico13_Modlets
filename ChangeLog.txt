@@ -25,7 +25,7 @@
 	Version bump for 1.7.2
 	Updated all AssemblyVersion.tt for location independent builds
 
-1.4.2
+1.5
 	Added InstallChecker to al modlets
 	Updated MiniAVC to 1.4
 	Rebuild for 1.8
