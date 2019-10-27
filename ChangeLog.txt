@@ -26,6 +26,9 @@
 	Updated all AssemblyVersion.tt for location independent builds
 
 1.5
-	Added InstallChecker to al modlets
+	Added InstallChecker to all modlets
 	Updated MiniAVC to 1.4
 	Rebuild for 1.8
+
+1.5.0.1
+	Updated MiniAVC.dll to 1.4.0.2 to fix a nasty CTD
