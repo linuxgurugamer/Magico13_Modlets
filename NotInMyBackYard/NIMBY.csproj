@@ -54,6 +54,8 @@
     <Compile Include="NotInMyBackYard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnloadedMobileBeacon.cs" />
+    <Compile Include="NIMBYEvent.cs" />
+    <Compile Include="NimbyScenario.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AssemblyVersion.tt">

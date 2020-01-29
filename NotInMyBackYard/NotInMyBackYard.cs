@@ -12,7 +12,8 @@ namespace NotInMyBackYard
         protected Button.ButtonClickedEvent originalCallback;
 
         public List<IBeacon> StaticBeacons { get; set; } = new List<IBeacon>();
-        public static double MobileBeaconRange { get; set; } = 2000;
+        //(severedsolo) Up range of MobileBeacon so the player can do a low pass with a "spotter plane"
+        public static double MobileBeaconRange { get; set; } = 10000;
 
         public void Start()
         {
@@ -51,14 +52,17 @@ namespace NotInMyBackYard
 
         protected void NewRecoveryFunction(Vessel vessel)
         {
+            //(severedsolo) Originally the mod checked for beacons only, but now we can "tag" need to handle it elsewhere too.
+            bool recoveryAllowed = false;
             Debug.Log("[NIMBY] Our recovery function is being called!");
             //check the distance to the KSC, if within 100km then recover, else pop up a message
 
             //We might be able to (temporarily) change the location of the KSC to the closest Beacon, which would also change the amount of funds we recover due to distance
-
+            //(severedsolo) I don't see the need to try to move KSC.
+            //Kerbal Konstructs just uses normal recovery values unless you are on the pad/runway, that's good enough.
+            //The new plugin will create beacons for KK bases anyway.
             IBeacon closestBeacon = null; //Used for if we're not in range of any beacons
             double shortestDistance = double.PositiveInfinity;
-
             foreach (IBeacon beacon in GetAllBeacons())
             {
                 if (!beacon.Active || beacon.Range <= 0)
@@ -72,20 +76,24 @@ namespace NotInMyBackYard
 
                 if (beacon.CanRecoverVessel(vessel))
                 {
-                    originalCallback.Invoke();
-                    return;
+                    recoveryAllowed = true;
+                    break;
                 }
-                else
+
+                if (distance > 0 && adjustedDistance < shortestDistance) //the > 0 checks that it isn't the active vessel
                 {
-                    if (distance > 0 && adjustedDistance < shortestDistance) //the > 0 checks that it isn't the active vessel
-                    {
-                        shortestDistance = adjustedDistance;
-                        closestBeacon = beacon;
-                    }
+                    shortestDistance = adjustedDistance;
+                    closestBeacon = beacon;
                 }
             }
-
-            //No beacons in range
+            if (NIMBYEvent.Instance.taggedVessels.Contains(vessel.id)) recoveryAllowed = true;
+            if (recoveryAllowed)
+            {
+                NIMBYEvent.Instance.taggedVessels.Remove(vessel.id);
+                originalCallback.Invoke();
+                return;
+            }
+            //No beacons in range (severedsolo)Or vessel not tagged.
             //popup "error"
             Debug.Log("[NIMBY] Too far to recover!");
 
@@ -159,11 +167,12 @@ namespace NotInMyBackYard
                 return false;
             }
             //check for the module on the vessel
-            if (!vessel.protoVessel.protoPartSnapshots.Exists(p => p.modules.Exists(m => m.moduleName == nameof(ModuleMobileRecoveryBeacon))))
-            {
-                //Debug.Log($"[NIMBY] {vessel.GetDisplayName()} doesn't have a recovery module.");
-                return false;
-            }
+            //(severedsolo) Why the LINQ when KSP has a perfectly good method for doing this?
+            if (!FinePrint.Utilities.VesselUtilities.VesselHasModuleName("ModuleMobileRecoveryBeacon", vessel)) return false;
+            /*
+            (severedsolo) - I've just commented this out for now, but in my opinion this is all bullshit.
+            "Have a Lab, and an Engineer, and be within 2km" - way too restrictive
+            In my opinion this mod would be alot more fun if you could just use "spotter planes"(/severedsolo)
             //check for a lab on the vessel
             if (!vessel.protoVessel.protoPartSnapshots.Exists(p => p.modules.Exists(m => m.moduleName == nameof(ModuleScienceLab))))
             {
@@ -182,6 +191,7 @@ namespace NotInMyBackYard
                 //Debug.Log($"[NIMBY] {vessel.GetDisplayName()} doesn't have an engineer.");
                 return false;
             }
+            */
             return true;
         }
     }

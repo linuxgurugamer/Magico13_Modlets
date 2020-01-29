@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NotInMyBackYard
 {
@@ -11,6 +12,43 @@ namespace NotInMyBackYard
     /// </summary>
     public class ModuleMobileRecoveryBeacon : PartModule, IBeacon
     {
+        //(severedsolo) actually show the player that they have a beacon.
+        [KSPField(isPersistant = false, guiActive = true, guiUnits = "m", guiName = "Mobile Beacon Range")]
+        public int range = (int)NotInMyBackYard.MobileBeaconRange;
+
+        [KSPField(isPersistant = false, guiActive = true, guiName ="Tagged for Recovery:")]
+        public bool tagged = false;
+
+        private void Start()
+        {
+            if (!HighLogic.LoadedSceneIsFlight) return;
+            NIMBYEvent.OnVesselsTagged.Add(VesselTagged);
+            tagged = NIMBYEvent.Instance.taggedVessels.Contains(vessel.id);
+        }
+
+        private void OnDisable()
+        {
+            if(NIMBYEvent.OnVesselsTagged != null) NIMBYEvent.OnVesselsTagged.Remove(VesselTagged);
+        }
+
+        //(severedsolo) Tag vessel if the event fires.
+        private void VesselTagged(Vessel taggingVessel)
+        {
+            //Don't tag ourselves
+            if (vessel == taggingVessel) return;
+            //If not in range don't tag
+            if (!StrictRequirementsMet) return;
+            NIMBYEvent.Instance.TagVessel(vessel);
+            tagged = true;
+        }
+
+        [KSPEvent(active = true, guiActive = true, guiActiveUnfocused = false, externalToEVAOnly = false, guiName = "Tag Vessels For Recovery")]
+        public void TagVessels()
+        {
+            //Declare to all vessels with loaded PartModules (ie within physics range) that they are trying to be tagged.
+            NIMBYEvent.OnVesselsTagged.Fire(vessel);
+        }
+        
         public bool StrictRequirementsMet
         {
             get
