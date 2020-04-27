@@ -1,3 +1,4 @@
+Changelog
 
 1.4.0.1
 	Adoption by Linuxgurugamer
@@ -35,3 +36,7 @@
 
 1.5.0.2
 	Really did the MiniAVC update
+
+1.5.0.3 (DatedQuicksaves 1.2.4.3)
+	Added leading zero's to the numbers to allow for proper sorting, may also fix a related bug
+	when the numbers switch from D99 to D100, where the newer ones were being garbage collected

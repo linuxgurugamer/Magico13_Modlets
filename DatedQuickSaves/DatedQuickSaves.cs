@@ -182,8 +182,8 @@ namespace DatedQuickSaves
     public class Configuration
     {
         public string dateFormat = "yyyy-MM-dd--HH-mm-ss";
-        public string fileTemplate = "quicksave_Y[year]D[day]H[hour]M[min]S[sec]";
-        public string autoSaveTemplate = "autosave_Y[year]D[day]H[hour]M[min]S[sec]";
+        public string fileTemplate = "quicksave_Y[year0]D[day0]H[hour0]M[min0]S[sec0]";
+        public string autoSaveTemplate = "autosave_Y[year0]D[day0]H[hour0]M[min0]S[sec0]";
 
         public bool fillSpaces = false;
         public string spaceFiller = "_";
