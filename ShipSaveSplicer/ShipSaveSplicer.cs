@@ -5,7 +5,8 @@ using UnityEngine;
 using System.Reflection;
 using KSP.UI.Screens;
 using System.Text;
-
+using KSP.Localization;
+using ClickThroughFix;
 using ToolbarControl_NS;
 
 namespace ShipSaveSplicer
@@ -25,15 +26,15 @@ namespace ShipSaveSplicer
     {
         //private static ApplicationLauncherButton _theButton;
         private static bool _includeCrew = false;
-        private static bool _eventAdded = false;
         public void Start()
         {
             //add button to the Stock toolbar
-            if (!_eventAdded)
-            {
-                GameEvents.onGUIApplicationLauncherReady.Add(AddButton);
-                _eventAdded = true;
-            }
+            //if (!_eventAdded)
+            //{
+            //    GameEvents.onGUIApplicationLauncherReady.Add(AddButton);
+            //    _eventAdded = true;
+            //}
+            AddButton();
         }
 
         public void OnDestroy()
@@ -45,8 +46,11 @@ namespace ShipSaveSplicer
                 _theButton = null;
             }
 #endif
-            toolbarControl.OnDestroy();
-            Destroy(toolbarControl);
+            if (toolbarControl != null)
+            {
+                toolbarControl.OnDestroy();
+                Destroy(toolbarControl);
+            }
         }
 
        
@@ -56,26 +60,21 @@ namespace ShipSaveSplicer
 
         public void AddButton()
         {
-#if false
-            if (ApplicationLauncher.Ready && _theButton == null && HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+            if (toolbarControl == null)
             {
-                _theButton = ApplicationLauncher.Instance.AddModApplication(
-                    OnClick,
-                    Dummy, Dummy, Dummy, Dummy, Dummy, ApplicationLauncher.AppScenes.TRACKSTATION, GameDatabase.Instance.GetTexture("ShipSaveSplicer/icon", false));
+                toolbarControl = gameObject.AddComponent<ToolbarControl>();
+                toolbarControl.AddToAllToolbars(OnClick, null,
+                    ApplicationLauncher.AppScenes.TRACKSTATION,
+                    MODID,
+                    "shipsaveButton",
+                    "ShipSaveSplicer/PluginData/icon-38",
+                    "ShipSaveSplicer/PluginData/icon-24",
+                    MODNAME
+                );
             }
-#endif
-            toolbarControl = gameObject.AddComponent<ToolbarControl>();
-            toolbarControl.AddToAllToolbars(OnClick, Dummy,
-                ApplicationLauncher.AppScenes.TRACKSTATION,
-                MODID,
-                "shipsaveButton",
-                "ShipSaveSplicer/PluginData/icon-38",
-                "ShipSaveSplicer/PluginData/icon-24",
-                MODNAME
-            );
         }
 
-        private void Dummy() { }
+        void Dummy() { }
 
         public void OnClick()
         {
@@ -87,15 +86,14 @@ namespace ShipSaveSplicer
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 OpenConvertWindow(); //convert ships to craft files
-                                     //                _theButton.SetFalse();
                 toolbarControl.SetFalse(false);
+
                 return;
             }
 
             //get the selected craft
             SpaceTracking trackingStation = (SpaceTracking)FindObjectOfType(typeof(SpaceTracking));
             Vessel selectedVessel = trackingStation.SelectedVessel;
-
             if (ctrlHeld || _includeCrew) //ctrl or modifier held
             {
                 OpenImportWindow();
@@ -103,6 +101,11 @@ namespace ShipSaveSplicer
             else if (selectedVessel != null) 
             {
                 ExportSelectedCraft(selectedVessel);
+            }
+            else
+            {
+                ScreenMessage message = new ScreenMessage("No vessel selected", 6, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage(message);
             }
 
             //            _theButton.SetFalse(false);
@@ -113,7 +116,15 @@ namespace ShipSaveSplicer
         {
             CreateFolder();
 
-            string filename = KSPUtil.ApplicationRootPath + "/Ships/export/" + HighLogic.SaveFolder + "_" + vessel.vesselName;
+            string vname1 = vessel.vesselName;
+
+            string vname = "";
+            Localizer.TryGetStringByTag(vname1, out vname);
+            if (vname == "" || vname==null)
+                vname = vname1;
+
+
+            string filename = KSPUtil.ApplicationRootPath + "Ships/export/" + HighLogic.SaveFolder + "_" + vname;
             Log($"Exporting vessel: {vessel.vesselName}\nExporting to file: {filename}");
 
             ConfigNode nodeToSave = new ConfigNode();
@@ -134,14 +145,20 @@ namespace ShipSaveSplicer
 
             nodeToSave.Save(filename);
 
-            ScreenMessage message = new ScreenMessage(vessel.vesselName+" exported to "+filename, 6, ScreenMessageStyle.UPPER_CENTER);
-            ScreenMessages.PostScreenMessage(message);
+            //ScreenMessage message = new ScreenMessage(vname+" exported to "+filename, 6, ScreenMessageStyle.UPPER_CENTER);
+            //ScreenMessages.PostScreenMessage(message);
+
+            PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Export", "Export Complete",
+                "Vessel has been exported to:\n" + filename,
+                "Ok", false, HighLogic.UISkin);
         }
 
         public void OpenConvertWindow()
         {
+            CreateFolder();
+
             //convert the selected vessel to a craft file and save it in the ships folder for the save
-            string dir = KSPUtil.ApplicationRootPath + "/Ships/export/";
+            string dir = KSPUtil.ApplicationRootPath + "Ships/export/";
             //provide a list of all the craft we can import
             string[] files = System.IO.Directory.GetFiles(dir);
             int count = files.Length;
@@ -150,7 +167,12 @@ namespace ShipSaveSplicer
             for (int i = 0; i < count; i++)
             {
                 int select = i;
-                options[i] = new DialogGUIButton(files[i].Split('/').Last(), () => { ConvertToCraft(files[select]); });
+                string vname="";
+                string vname1 = files[i].Split('/').Last();
+                Localizer.TryGetStringByTag(vname1, out vname);
+                if (vname == "" || vname == null)
+                    vname = vname1;
+                options[i] = new DialogGUIButton( vname, () => { ConvertToCraft(files[select]); });
             }
             options[count] = new DialogGUIButton("Close", Dummy);
             string msg = "Select a vessel to convert to a .craft file.";
@@ -158,6 +180,7 @@ namespace ShipSaveSplicer
             MultiOptionDialog a = new MultiOptionDialog("convertPopup", msg, "Convert Vessel to .craft", null, options);
             PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), a, false, HighLogic.UISkin);
         }
+
 
         public void ConvertToCraft(string name)
         {
@@ -233,21 +256,32 @@ namespace ShipSaveSplicer
 
                 if (ConstructToSave.shipFacility == EditorFacility.SPH)
                 {
-                    CN.Save(UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
-                        + "/Ships/SPH/" + ShipName + "_Rescued.craft");
+                    string filename = UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
+                        + "/Ships/SPH/" + ShipName + "_Rescued.craft";
+                    CN.Save(filename);
 
-                    ScreenMessage message = new ScreenMessage(ShipName + " converted to " + UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
-                        + "/Ships/SPH/" + ShipName + "_Rescued.craft", 6, ScreenMessageStyle.UPPER_CENTER);
-                    ScreenMessages.PostScreenMessage(message);
+                    //ScreenMessage message = new ScreenMessage(ShipName + " converted to " + filename, 6, ScreenMessageStyle.UPPER_CENTER);
+                    //ScreenMessages.PostScreenMessage(message);
+
+                    PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Convert", "Conversion Complete",
+                        "Vessel has been converted to a craft file:\n" + filename,
+                        "Ok", false, HighLogic.UISkin);
                 }
                 else
                 {
-                    CN.Save(UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
-                        + "/Ships/VAB/" + ShipName + "_Rescued.craft");
+                    string filename = UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
+                        + "/Ships/VAB/" + ShipName + "_Rescued.craft";
+                    CN.Save(filename);
 
-                    ScreenMessage message = new ScreenMessage(ShipName + " converted to " + UrlDir.ApplicationRootPath + "saves/" + HighLogic.SaveFolder
-                        + "/Ships/VAB/" + ShipName + "_Rescued.craft", 6, ScreenMessageStyle.UPPER_CENTER);
-                    ScreenMessages.PostScreenMessage(message);
+                    //ScreenMessage message = new ScreenMessage(ShipName + " converted to " + filename, 6, ScreenMessageStyle.UPPER_CENTER);
+                    //ScreenMessages.PostScreenMessage(message);
+
+                    PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Convert", "Conversion Complete",
+                        "Vessel has been converted to a craft file:\n" + filename,
+                        "Ok", false, HighLogic.UISkin);
+
+
+
                 }
             }
             catch (Exception e)
@@ -264,7 +298,7 @@ namespace ShipSaveSplicer
 
         public void OpenImportWindow()
         {
-            string dir = KSPUtil.ApplicationRootPath + "/Ships/export/";
+            string dir = KSPUtil.ApplicationRootPath + "Ships/export/";
             //provide a list of all the craft we can import
             string[] files = System.IO.Directory.GetFiles(dir);
             int count = files.Length;
@@ -387,6 +421,12 @@ namespace ShipSaveSplicer
                 }
                 //In 1.2.2+ saving fails when there are two copies of a ship with crew onboard both. Might be part ID related.
                 //All I know is that if I terminate the original flight, I can import crew. Otherwise it NREs when it tries to save the flight state.
+
+                PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Import", "Import complete",
+                    "Vessel has been imported",
+                    "Ok", false, HighLogic.UISkin);
+
+
             }
         }
 
@@ -428,7 +468,7 @@ namespace ShipSaveSplicer
 
         public void CreateFolder()
         {
-            string filename = KSPUtil.ApplicationRootPath + "/Ships/export/";
+            string filename = KSPUtil.ApplicationRootPath + "Ships/export/";
             if (!System.IO.Directory.Exists(filename))
             {
                 System.IO.Directory.CreateDirectory(filename);
