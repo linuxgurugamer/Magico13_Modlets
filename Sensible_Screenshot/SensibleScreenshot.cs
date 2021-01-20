@@ -7,7 +7,7 @@ namespace SensibleScreenshot
     public class SensibleScreenshot : MonoBehaviour
     {
         private List<string> ScreenShotsFolder = new List<string>();
-        string ssfolder = KSPUtil.ApplicationRootPath + "Screenshots/";
+        string ssfolder;
         private bool DoCheck = false;
         private int timeout = 30, timer = 0;
         private Configuration config = new Configuration();
@@ -118,6 +118,7 @@ namespace SensibleScreenshot
 
         public void Start()
         {
+            ssfolder = KSPUtil.ApplicationRootPath + "Screenshots/";
             UpdateFolderKnowledge();
             config.Load();
             config.Save();

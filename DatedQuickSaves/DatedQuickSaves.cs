@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DatedQuickSaves
 {
-    [KSPAddon(KSPAddon.Startup.Flight, false)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
     public class DatedQuickSaves : MonoBehaviour
     {
         private static bool DoCheck = false;
@@ -15,9 +15,11 @@ namespace DatedQuickSaves
         private List<string> SavedQSFiles = new List<string>();
         private List<string> SavedASFiles = new List<string>();
 
-        private Configuration config = new Configuration();
+        private Configuration config;
+
         void Start()
         {
+            config = new Configuration();
             config.Load();
             config.Save();
 

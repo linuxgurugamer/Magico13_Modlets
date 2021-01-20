@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System.Reflection;
 using KSP.UI.Screens;
 using System.Text;
 using KSP.Localization;
-using ClickThroughFix;
 using ToolbarControl_NS;
 
 namespace ShipSaveSplicer
@@ -28,24 +26,11 @@ namespace ShipSaveSplicer
         private static bool _includeCrew = false;
         public void Start()
         {
-            //add button to the Stock toolbar
-            //if (!_eventAdded)
-            //{
-            //    GameEvents.onGUIApplicationLauncherReady.Add(AddButton);
-            //    _eventAdded = true;
-            //}
             AddButton();
         }
 
         public void OnDestroy()
         {
-#if false
-            if (_theButton != null)
-            {
-                ApplicationLauncher.Instance.RemoveModApplication(_theButton);
-                _theButton = null;
-            }
-#endif
             if (toolbarControl != null)
             {
                 toolbarControl.OnDestroy();
