@@ -44,3 +44,15 @@ Changelog
 1.5.1 (ShipSaveSplicer 1.1.6)
 	Fixed Netkan install
 	Added informational dialogs at completion of action
+
+1.5.1.2
+	Added AssemblyFileVersion
+	Updated version file for 1.12
+		DatedQuickSaves - 1.2.4.5
+		EditorTime - 1.0.7.3
+		NIMBY - 1.1.3.3
+		SensibleScreenshot - 1.2.5.4
+		ShipSaveSplicer - 1.1.6.1
+		Treetoppler - 1.1.4.3
+		Wwwwwwwww - 1.1.4.3
+

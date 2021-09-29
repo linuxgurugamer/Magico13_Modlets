@@ -36,7 +36,6 @@ rem Copy files to GameData locations
 
 copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
 copy /Y %VERSIONFILE% %GAMEDATA%\%3
-copy /Y ..\MiniAVC.dll %GAMEDATA%\%3
 
 if "%LICENSE%" NEQ "" copy /y  %LICENSE% %GAMEDATA%\%3
 if "%README%" NEQ "" copy /Y %README% %GAMEDATA%\%3
