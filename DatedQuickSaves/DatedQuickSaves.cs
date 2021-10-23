@@ -21,12 +21,9 @@ namespace DatedQuickSaves
 
         void Start()
         {
-            //settings = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings>();
-            
             GameEvents.OnGameSettingsApplied.Add(OnGameSettingsApplied);
             
             settings = new Settings();
-
 
             if (settings.QuickSaveEnable || settings.AutoSaveEnable)
             {
@@ -34,18 +31,15 @@ namespace DatedQuickSaves
 
                 GetKnownFiles();
 
-                if (settings.QuickSaveEnable && !settings.QuickSaveForce)
-                    GameEvents.onGameAboutToQuicksave.Add(OnGameAboutToQuicksave);
-
                 if (settings.AutoSaveEnable)
                 {
                     var freq_sec = settings.AutoSaveFreq * 60;
 
-                    // preventing shrinking period in Physic Warp
+                    // scale period in Physic Warp
                     if (TimeWarp.WarpMode == TimeWarp.Modes.LOW)
-                        freq_sec = (int)(freq_sec * TimeWarp.CurrentRate);
+                        freq_sec = (int)(freq_sec * Math.Max(TimeWarp.CurrentRate, 1));
 
-                        if (settings.AutoSaveOnStart)
+                    if (settings.AutoSaveOnStart)
                         InvokeRepeating("DoAutoSave", 1, freq_sec);
                     else
                         InvokeRepeating("DoAutoSave", freq_sec, freq_sec);
@@ -56,8 +50,6 @@ namespace DatedQuickSaves
         void OnGameSettingsApplied()
         {
             Logger.Log("OnGameSettingsApplied");
-
-            UpdateStockSettings();
 
             if (config != null && HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings>().ReloadExtra)
             {
@@ -71,19 +63,18 @@ namespace DatedQuickSaves
             {
                 Logger.Log("new_settings != settings");
 
+                if (settings.StockNeedUpdate(new_settings))
+                {
+                    GameSettings.AUTOSAVE_INTERVAL = new_settings.StockAutosaveInterval;
+                    GameSettings.AUTOSAVE_SHORT_INTERVAL = new_settings.StockAutosaveShortInterval;
+                    GameSettings.SaveSettings();
+                }
+
                 if (settings.NeedUpdateAndEnabling(new_settings))
                 {
                     Logger.Log("NeedUpdateAndEnabling");
                     config = new Configuration();
                     GetKnownFiles();
-                }
-
-                if (settings.QuickSaveNeedUpdate(new_settings))
-                {
-                    if (new_settings.QuickSaveEnable && !new_settings.QuickSaveForce)
-                        GameEvents.onGameAboutToQuicksave.Add(OnGameAboutToQuicksave);
-                    else
-                        GameEvents.onGameAboutToQuicksave.Remove(OnGameAboutToQuicksave);
                 }
 
                 if (settings.AutoSaveNeedUpdate(new_settings))
@@ -108,30 +99,14 @@ namespace DatedQuickSaves
             }
         }
 
-        void UpdateStockSettings()
-        {
-            var settings2 = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings2>();
-
-            GameSettings.AUTOSAVE_INTERVAL = settings2.StockAutosaveInterval * 60;
-            GameSettings.AUTOSAVE_SHORT_INTERVAL = settings2.StockAutosaveShortInterval;
-
-            GameSettings.SaveSettings();
-        }
-
         public void OnDisable()
         {
             GameEvents.OnGameSettingsApplied.Remove(OnGameSettingsApplied);
-
-            if (settings.QuickSaveEnable && !settings.QuickSaveForce)
-                GameEvents.onGameAboutToQuicksave.Remove(OnGameAboutToQuicksave);
         }
         bool invokeOnce = false;
         void Update()
         {
-            // in the Start() this.enable suppouse to disable Update()
-            Logger.Log("Update()");
-
-            if (settings.QuickSaveEnable && settings.QuickSaveForce)
+            if (settings.QuickSaveEnable)
             {
                 if (GameSettings.QUICKSAVE.GetKey() && !GameSettings.MODIFIER_KEY.GetKey()) //F5 but not Alt-F5
                 {
@@ -146,54 +121,15 @@ namespace DatedQuickSaves
             }
         }
 
-
-        private void OnGameAboutToQuicksave()
-        {
-            //Logger.LogColor("OnGameAboutToQuicksave");
-
-            // OnGameAboutToQuicksave() is not run if ksp prevent saving, for example on moving in atm rover/plane
-            // so there is ForceQuicksave option for disabling OnGameAboutToQuicksave() and enabling Update()
-
-            // OnGameAboutToQuicksave() is run on all F5, Alt+F5, Esc/SaveGame,
-            // so we need to filter Alt+F5 and Esc/SaveGame
-
-
-            try  // because sometimes(?) it's trying to Invoke 2 times, and second time it makes Exception.
-            {
-                TimeSpan fileAge = DateTime.Now - File.GetLastWriteTime(SaveFolder + "quicksave.sfs");
-
-                if (!settings.StockQuickSaveRename && fileAge.TotalMilliseconds > settings.QuickSaveDelay2MS)
-                {
-                    // if coping option is enabled, the quicksave.sfs will be outdated on Alt+F5 or Esc/SaveGame.
-                    // because it leaved there from the last F5-quicksave. 
-
-                    Logger.Log($"Alt+F5 or Esc/SaveGame is detected (quicksave.sfs is too old: {fileAge.TotalSeconds}s), prevent DatedQuickSave." +
-                        $" On false alarm, try to increase QuickSaveDelay settings to >{fileAge.TotalSeconds}");
-
-                    return;
-                }
-
-                Invoke("DoQuickSaveWork", settings.QuickSaveDelay);
-            }
-            catch
-            {
-                //Logger.LogColor("Invoke() - catch");
-            }
-        }
-
         void DoQuickSaveWork()
         {
             //Logger.LogColor("DoQuickSaveWork");
             
             string quicksave = SaveFolder + "quicksave";
 
-            
-
             if (!File.Exists(quicksave + ".sfs"))
             {
-                // if renaming option is enabled, there will be no quicksave.sfs on Alt+F5 or Esc/SaveGame 
-                // because it was renamed on last F5-quicksave, so no renaming on Alt+F5 or Esc/SaveGame 
-                //Logger.Log("No quicksave file");
+                Logger.Log("No quicksave file");
                 return;
             }
 
@@ -393,44 +329,52 @@ namespace DatedQuickSaves
     public class Settings
     {
         public bool QuickSaveEnable;
-        public bool QuickSaveForce;
         public int MaxQuickSaveCount;
         public bool StockQuickSaveRename;
         public int QuickSaveDelayMS;
         public float QuickSaveDelay;
-        public int QuickSaveDelay2MS;
-        public float QuickSaveDelay2;
 
         public bool AutoSaveEnable;
         public bool AutoSaveOnStart;
         public int AutoSaveFreq;
         public int MaxAutoSaveCount;
 
+        public int StockAutosaveInterval;
+        public int StockAutosaveShortInterval;
+
         public Settings()
         {
             var settings = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings>();
+            var settings2 = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings2>();
 
             QuickSaveEnable = settings.QuickSaveEnable;
-            QuickSaveForce = settings.QuickSaveForce;
             StockQuickSaveRename = settings.StockQuickSaveRename;
             MaxQuickSaveCount = settings.MaxQuickSaveCount;
             QuickSaveDelayMS = settings.QuickSaveDelayMS;
             QuickSaveDelay = QuickSaveDelayMS / 1000.0f;
-            QuickSaveDelay2MS = settings.QuickSaveDelay2MS;
-            QuickSaveDelay2 = QuickSaveDelay2MS / 1000.0f;
 
             AutoSaveEnable = settings.AutoSaveEnable;
             AutoSaveFreq = settings.AutoSaveFreq;
             AutoSaveOnStart = settings.AutoSaveOnStart;
             MaxAutoSaveCount = settings.MaxAutoSaveCount;
+
+            StockAutosaveInterval = settings2.StockAutosaveInterval * 60;
+            StockAutosaveShortInterval = settings2.StockAutosaveShortInterval;
+        }
+
+        public bool StockNeedUpdate(Settings new_settings)
+        {
+            if (new_settings == null) return false;
+
+            return StockAutosaveInterval != new_settings.StockAutosaveInterval
+                || StockAutosaveShortInterval != new_settings.StockAutosaveShortInterval;
         }
 
         public bool QuickSaveNeedUpdate(Settings new_settings)
         {
             if (new_settings == null) return false;
 
-            return QuickSaveEnable != new_settings.QuickSaveEnable
-                || QuickSaveForce != new_settings.QuickSaveForce;
+            return QuickSaveEnable != new_settings.QuickSaveEnable;
         }
 
         public bool QuickSaveNeedUpdateAndEnabling(Settings new_settings)
@@ -439,7 +383,6 @@ namespace DatedQuickSaves
 
             return QuickSaveNeedUpdate(new_settings) 
                 && new_settings.QuickSaveEnable
-                && !new_settings.QuickSaveForce
                 ;
         }
 

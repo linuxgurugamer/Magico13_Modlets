@@ -23,9 +23,6 @@ namespace DatedQuickSaves
         [GameParameters.CustomParameterUI("#DQS_QuickSaveEnable", toolTip = "")]
         public bool QuickSaveEnable = true;
 
-        [GameParameters.CustomParameterUI("#DQS_ForcedQuickSave", toolTip = "#DQS_ForcedQuickSave_t")]
-        public bool QuickSaveForce = true;
-
         [GameParameters.CustomParameterUI("#DQS_StockQuickSaveRename", toolTip = "#DQS_StockQuickSaveRename_t")]
         public bool StockQuickSaveRename = true;
 
@@ -36,11 +33,6 @@ namespace DatedQuickSaves
         [GameParameters.CustomIntParameterUI("#DQS_QuickSaveDelay", toolTip = "#DQS_QuickSaveDelay_t", 
             minValue = 500, maxValue = 15000, stepSize =500)]
         public int QuickSaveDelayMS = 1000;
-
-        [GameParameters.CustomIntParameterUI("#DQS_QuickSaveDelay2", toolTip = "#DQS_QuickSaveDelay2_t",
-    minValue = 500, maxValue = 15000, stepSize = 500)]
-        public int QuickSaveDelay2MS = 5000;
-
 
         [GameParameters.CustomStringParameterUI("#DQS_AutoSave", toolTip = "", lines = 1)]
         public string AutoSave = "";
@@ -57,10 +49,6 @@ namespace DatedQuickSaves
         [GameParameters.CustomIntParameterUI("#DQS_MaxAutoSaveCount", toolTip = "#DQS_MaxAutoSaveCount_t", minValue = -1, maxValue = 50)]
         public int MaxAutoSaveCount = 20;
 
-
-
-
-
         [GameParameters.CustomStringParameterUI("#DQS_Note1", toolTip = "", lines = 2)]
         public string note1 = "";
 
@@ -70,19 +58,14 @@ namespace DatedQuickSaves
 
         public override bool Enabled(MemberInfo member, GameParameters parameters)
         {
-            if (member.Name == nameof(QuickSaveDelay2MS))
-                return !QuickSaveForce;
-
             return true;
         }
 
         public override bool Interactible(MemberInfo member, GameParameters parameters)
         {
             if (member.Name == nameof(MaxQuickSaveCount)
-                || member.Name == nameof(QuickSaveForce)
                 || member.Name == nameof(StockQuickSaveRename)
                 || member.Name == nameof(QuickSaveDelayMS)
-                || member.Name == nameof(QuickSaveDelay2MS)
                 )
                 return QuickSaveEnable;
 
