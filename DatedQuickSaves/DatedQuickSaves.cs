@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System.Configuration;
 
 namespace DatedQuickSaves
 {
@@ -61,7 +60,6 @@ namespace DatedQuickSaves
 
             if (new_settings != settings)
             {
-                Logger.Log("new_settings != settings");
 
                 if (settings.StockNeedUpdate(new_settings))
                 {
@@ -72,7 +70,6 @@ namespace DatedQuickSaves
 
                 if (settings.NeedUpdateAndEnabling(new_settings))
                 {
-                    Logger.Log("NeedUpdateAndEnabling");
                     config = new Configuration();
                     GetKnownFiles();
                 }
@@ -138,8 +135,8 @@ namespace DatedQuickSaves
             if (System.IO.File.Exists(fname))
             {
                 int cnt = 0;
-                while (System.IO.File.Exists(SaveFolder + newName + "-" + cnt.ToString() + ".sfs") ||
-                    System.IO.File.Exists(SaveFolder + newName + "-" + cnt.ToString() + ".loadmeta"))
+                while (File.Exists(SaveFolder + newName + "-" + cnt.ToString() + ".sfs") ||
+                    File.Exists(SaveFolder + newName + "-" + cnt.ToString() + ".loadmeta"))
                     cnt++;
                 newName = newName + "-" + cnt.ToString();
                 fname = SaveFolder + newName;
@@ -196,7 +193,7 @@ namespace DatedQuickSaves
             SavedQSFiles.Clear();
             SavedASFiles.Clear();
             string saveFolder = SaveFolder;
-            if (System.IO.File.Exists(saveFolder + "DQS_DataBase.cfg"))
+            if (File.Exists(saveFolder + "DQS_DataBase.cfg"))
             {
                 ConfigNode database = ConfigNode.Load(saveFolder + "DQS_DataBase.cfg");
                 ConfigNode QSDB, ASDB;
@@ -255,6 +252,7 @@ namespace DatedQuickSaves
             int tgtQS = settings.MaxQuickSaveCount;
             int tgtAS = settings.MaxAutoSaveCount;
 
+
             string saveFolder = SaveFolder;
             int purgedQS = 0, purgedAS = 0;
             if (tgtQS >= 0) //if negative, then keep all files
@@ -280,7 +278,7 @@ namespace DatedQuickSaves
                 }
             }
             if (purgedQS > 0 || purgedAS > 0)
-                Logger.Log("Purged " + purgedQS + " QuickSaves and " + purgedAS + " AutoSaves.");
+                Logger.Log($"Purged {purgedQS} of {SavedQSFiles.Count} QuickSaves and {purgedAS} of {SavedASFiles.Count} AutoSaves.");
         }
     }
 
@@ -310,18 +308,16 @@ namespace DatedQuickSaves
 
         public void ReLoad()
         {
+            string filename = KSPUtil.ApplicationRootPath + "/GameData/DatedQuickSaves/extra_settings.cfg";
 
-            string directory = KSPUtil.ApplicationRootPath + "/GameData/DatedQuickSaves/";
-            string filename = "extra_settings.cfg";
+            ConfigNode cfg = ConfigNode.Load(filename).GetNode("DQS");
 
-            ConfigNode cfg = ConfigNode.Load(directory + filename).GetNode("DQS");
-
-            Logger.Log($"Lenght: {cfg.GetValues().Length}");
             cfg.TryGetValue("DateString", ref dateFormat);
             cfg.TryGetValue("QuickSaveTemplate", ref quickSaveTemplate);
             cfg.TryGetValue("AutoSaveTemplate", ref autoSaveTemplate);
 
-            Logger.Log($"quickSaveTemplate: {quickSaveTemplate}");
+            Logger.Log("Reload DQS Config");
+            ScreenMessages.PostScreenMessage("Reload DQS Config");
         }
     }
     
@@ -382,8 +378,7 @@ namespace DatedQuickSaves
             if (new_settings == null) return false;
 
             return QuickSaveNeedUpdate(new_settings) 
-                && new_settings.QuickSaveEnable
-                ;
+                && new_settings.QuickSaveEnable;
         }
 
         public bool AutoSaveNeedUpdate(Settings new_settings)
