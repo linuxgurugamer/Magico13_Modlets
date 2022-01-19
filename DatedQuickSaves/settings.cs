@@ -78,27 +78,4 @@ namespace DatedQuickSaves
             return true;
         }
     }
-
-    public class DQSSettings2 : GameParameters.CustomParameterNode
-    {
-        public override string Title { get { return Localizer.Format("#autoLOC_149458"); } }
-        public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.ANY; } }
-        public override string Section { get { return "Dated Quick Save"; } }
-        public override string DisplaySection { get { return "Dated Quick Save"; } }
-        public override int SectionOrder { get { return 2; } }
-        public override bool HasPresets { get { return false; } }
-
-        [GameParameters.CustomStringParameterUI("#DQS_Note2", toolTip = "", lines = 4)]
-        public string note2 = "";
-
-        [GameParameters.CustomIntParameterUI("#DQS_StockAutosaveInterval", toolTip = "#DQS_StockAutosaveInterval_t",
-minValue = 1, maxValue = 180, stepSize = 1)]
-        public int StockAutosaveInterval = 5;
-
-        [GameParameters.CustomIntParameterUI("#DQS_StockAutosaveShortInterval", toolTip = "#DQS_StockAutosaveShortInterval_t",
-    minValue = 10, maxValue = 1800, stepSize = 10)]
-        public int StockAutosaveShortInterval = 30;
-
-
-    }
 }

@@ -48,8 +48,6 @@ namespace DatedQuickSaves
 
         void OnGameSettingsApplied()
         {
-            Logger.Log("OnGameSettingsApplied");
-
             if (config != null && HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings>().ReloadExtra)
             {
                 config.ReLoad();
@@ -60,14 +58,6 @@ namespace DatedQuickSaves
 
             if (new_settings != settings)
             {
-
-                if (settings.StockNeedUpdate(new_settings))
-                {
-                    GameSettings.AUTOSAVE_INTERVAL = new_settings.StockAutosaveInterval;
-                    GameSettings.AUTOSAVE_SHORT_INTERVAL = new_settings.StockAutosaveShortInterval;
-                    GameSettings.SaveSettings();
-                }
-
                 if (settings.NeedUpdateAndEnabling(new_settings))
                 {
                     config = new Configuration();
@@ -175,7 +165,7 @@ namespace DatedQuickSaves
             string newName = MagiCore.StringTranslation.AddFormatInfo(config.autoSaveTemplate, "DatedQuickSaves", config.dateFormat);
             string relpath = Path.Combine("saves", HighLogic.SaveFolder, newName);
 
-            Logger.LogFormat("AutoSaving started to {0}. Tracking {1} autosaves.", relpath, SavedASFiles.Count);
+            //Logger.LogFormat("AutoSaving started to {0}. Tracking {1} autosaves.", relpath, SavedASFiles.Count);
 
             GamePersistence.SaveGame(newName, HighLogic.SaveFolder, SaveMode.OVERWRITE);
             SavedASFiles.Add(newName);
@@ -335,13 +325,9 @@ namespace DatedQuickSaves
         public int AutoSaveFreq;
         public int MaxAutoSaveCount;
 
-        public int StockAutosaveInterval;
-        public int StockAutosaveShortInterval;
-
         public Settings()
         {
             var settings = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings>();
-            var settings2 = HighLogic.CurrentGame.Parameters.CustomParams<DQSSettings2>();
 
             QuickSaveEnable = settings.QuickSaveEnable;
             StockQuickSaveRename = settings.StockQuickSaveRename;
@@ -353,18 +339,8 @@ namespace DatedQuickSaves
             AutoSaveFreq = settings.AutoSaveFreq;
             AutoSaveOnStart = settings.AutoSaveOnStart;
             MaxAutoSaveCount = settings.MaxAutoSaveCount;
-
-            StockAutosaveInterval = settings2.StockAutosaveInterval * 60;
-            StockAutosaveShortInterval = settings2.StockAutosaveShortInterval;
         }
 
-        public bool StockNeedUpdate(Settings new_settings)
-        {
-            if (new_settings == null) return false;
-
-            return StockAutosaveInterval != new_settings.StockAutosaveInterval
-                || StockAutosaveShortInterval != new_settings.StockAutosaveShortInterval;
-        }
 
         public bool QuickSaveNeedUpdate(Settings new_settings)
         {
