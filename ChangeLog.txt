@@ -56,3 +56,7 @@ Changelog
 		Treetoppler - 1.1.4.3
 		Wwwwwwwww - 1.1.4.3
 
+1.5.2
+	DatedQuickSaves - 1.2.5
+		Thanks to github user @yalov for this
+			DatedQuickSaves: difficulty section settings, localization, and other
