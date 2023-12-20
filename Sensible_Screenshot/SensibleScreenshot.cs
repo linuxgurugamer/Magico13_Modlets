@@ -75,7 +75,8 @@ namespace SensibleScreenshot
                         else
                         {
                             string pngName = finalName.Replace(".jpg", ".png");
-                            file.MoveTo(ssfolder + pngName);
+                            Debug.Log("Renaming screenshot. New name: " + finalName);
+                            file.MoveTo(ssfolder + Sanitized(pngName));
                             ScreenShotsFolder.Add(pngName);
                         }
                     }
