@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace SensibleScreenshot
@@ -26,6 +27,7 @@ namespace SensibleScreenshot
         public string GetFileName()
         {
             string name = config.fileTemplate;
+
             //name = AddInfo(name);
             name = MagiCore.StringTranslation.AddFormatInfo(name, "SensibleScreenshot", config.dateFormat);
             if (config.fillSpaces)
@@ -45,6 +47,12 @@ namespace SensibleScreenshot
             return null;
         }
 
+        string Sanitized(string filename)
+        {
+            var invalids = System.IO.Path.GetInvalidFileNameChars();
+            return invalids.Aggregate(filename, (current, c) => current.Replace(c, '_'));
+        }
+
         public void DoWork()
         {
             DoCheck = false;
@@ -57,7 +65,8 @@ namespace SensibleScreenshot
                 //if (file != null)
                 {
                     string newName = GetFileName();
-                    string finalName = newName+fileExt;
+
+                    string finalName = newName + fileExt;
                     bool taken = ScreenShotsFolder.Contains(finalName);
                     int i = 1;
                     while (taken)
@@ -82,15 +91,15 @@ namespace SensibleScreenshot
                     }
                     else
                     {
-                        Debug.Log("Renaming screenshot. New name: " + finalName);
-                        file.MoveTo(ssfolder + finalName);
+                        Debug.Log("Renaming screenshot. New name: " + Sanitized(finalName));
+                        file.MoveTo(ssfolder + Sanitized(finalName));
                     }
                     ScreenShotsFolder.Add(finalName);
                 }
             }
         }
 
-        public void ConvertToJPG(string originalFile, string newFile, int quality=75)
+        public void ConvertToJPG(string originalFile, string newFile, int quality = 75)
         {
             Texture2D png = new Texture2D(1, 1);
             byte[] pngData = System.IO.File.ReadAllBytes(originalFile);

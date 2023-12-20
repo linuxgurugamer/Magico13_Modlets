@@ -18,3 +18,5 @@ rem copy /y  README.md %GAMEDATA%\%3
 rem copy /y  COPYING %GAMEDATA%\%3
 
 xcopy /y /s /I %GAMEDATA%\%3 "%H%\GameData\%3"
+
+rem pause

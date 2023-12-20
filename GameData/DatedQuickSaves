@@ -1,6 +1,6 @@
 {
-  "NAME": "Wwwwwwwww",
-  "URL": "http://ksp.spacetux.net/avc/Wwwwwwwww",
+  "NAME": "DatedQuickSaves",
+  "URL": "http://ksp.spacetux.net/avc/DatedQuickSaves",
   "DOWNLOAD": "https://github.com/linuxgurugamer/Magico13_Modlets/releases",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
@@ -8,13 +8,18 @@
   },
   "VERSION": {
     "MAJOR": 1,
-    "MINOR": 1,
-    "PATCH": 4,
-    "BUILD": 2
+    "MINOR": 2,
+    "PATCH": 5,
+    "BUILD": 1
+  },
+  "KSP_VERSION": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 4
   },
   "KSP_VERSION_MIN": {
     "MAJOR": 1,
-    "MINOR": 8,
+    "MINOR": 12,
     "PATCH": 0
   }
 }

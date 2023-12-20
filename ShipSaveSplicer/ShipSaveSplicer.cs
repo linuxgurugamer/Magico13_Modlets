@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using KSP.UI.Screens;
 using System.Text;
-using KSP.Localization;
+
+using UnityEngine;
 using ToolbarControl_NS;
+using ClickThroughFix;
+
+using KSP.UI.Screens;
+using KSP.Localization;
 
 namespace ShipSaveSplicer
 {

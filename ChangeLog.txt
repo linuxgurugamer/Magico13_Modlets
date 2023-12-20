@@ -60,3 +60,10 @@ Changelog
 	DatedQuickSaves - 1.2.5
 		Thanks to github user @yalov for this
 			DatedQuickSaves: difficulty section settings, localization, and other
+
+1.5.3
+	DatedQuickSaves - 1.2.5.1
+		Added dependency for Magicore 1.4 or later
+	SensibleScreenshot - 1.2.5.5
+		Added code to sanitize filename
+		Added dependency for Magicore 1.4 or later
