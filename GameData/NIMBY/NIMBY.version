@@ -1,0 +1,25 @@
+{
+  "NAME": "NIMBY",
+  "URL": "http://ksp.spacetux.net/avc/NIMBY",
+  "DOWNLOAD": "https://github.com/linuxgurugamer/Magico13_Modlets/releases",
+  "GITHUB": {
+    "USERNAME": "linuxgurugamer",
+    "REPOSITORY": "Magico13_Modlets"
+  },
+  "VERSION": {
+    "MAJOR": 1,
+    "MINOR": 1,
+    "PATCH": 3,
+    "BUILD": 3
+  },
+  "KSP_VERSION": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 2
+  },
+  "KSP_VERSION_MIN": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 0
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "NAME": "EditorTime",
+  "URL": "http://ksp.spacetux.net/avc/EditorTime",
+  "DOWNLOAD": "https://github.com/linuxgurugamer/Magico13_Modlets/releases",
+  "GITHUB": {
+    "USERNAME": "linuxgurugamer",
+    "REPOSITORY": "Magico13_Modlets"
+  },
+  "VERSION": {
+    "MAJOR": 1,
+    "MINOR": 0,
+    "PATCH": 7,
+    "BUILD": 3
+  },
+  "KSP_VERSION": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 2
+  },
+  "KSP_VERSION_MIN": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 0
+  }
+}
