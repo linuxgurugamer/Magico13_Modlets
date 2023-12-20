@@ -24,7 +24,7 @@
 1:NIMBY, NIMBY.version, Magico13_Modlets
 
 # 2:PROJNAME, PROJFILE, VERSIONFILE, PLUGINSFOLDER
-2:NIMBY,NotInMyBackyard/NIMBY.csproj,NIMBY.version,GameData/NIMBY/Plugins
+2:NIMBY,NotInMyBackYard/NIMBY.csproj,NIMBY.version,GameData/NIMBY/Plugins
 
 
 
