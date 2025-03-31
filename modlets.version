@@ -1,6 +1,6 @@
 {
   "NAME": "Magico12_Modlets",
-  "URL": "http://ksp.spacetux.net/avc/Magico12_Modlets",
+  "URL": "https://raw.githubusercontent.com/linuxgurugamer/Magico13_Modlets/refs/heads/master/modlets.version",
   "DOWNLOAD": "https://github.com/linuxgurugamer/Magico13_Modlets/releases",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
@@ -9,8 +9,8 @@
   "VERSION": {
     "MAJOR": 1,
     "MINOR": 5,
-    "PATCH": 2,
-    "BUILD": 3
+    "PATCH": 4,
+    "BUILD": 0
   },
   "KSP_VERSION": {
     "MAJOR": 1,
@@ -21,5 +21,10 @@
     "MAJOR": 1,
     "MINOR": 12,
     "PATCH": 0
+  },
+  "KSP_VERSION_MAX": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 99
   }
 }

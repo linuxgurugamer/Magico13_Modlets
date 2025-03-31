@@ -254,5 +254,18 @@ namespace NotInMyBackYard
         }
     }
 
+
+    //Run in the Tracking Station, every time.
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    public class NotInMyBackYard_SpaceCenter : NotInMyBackYard
+    {
+        //Called once when the scene starts
+        new public void Start()
+        {
+            base.Start(); //Call Start() in the parent class
+        }
+
+    }
+
     //We should also consider the space center scene (you can recover there) except that's *probably* within range. Unless someone purposefully removes the KSC as a Beacon
 }
